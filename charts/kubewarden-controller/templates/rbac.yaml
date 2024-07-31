@@ -101,6 +101,7 @@ rules:
   - delete
   - get
   - list
+  - patch
   - update
   - watch
 ---
@@ -246,7 +247,7 @@ rules:
     - clusterpolicyreports
   verbs:
     - create
-    - delete
+    - deletecollection
     - get
     - list
     - patch

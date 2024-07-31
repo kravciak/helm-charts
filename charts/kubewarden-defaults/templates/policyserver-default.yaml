@@ -1,4 +1,4 @@
-{{- if .Values.global.policyServer.default.enabled }}
+{{- if .Values.policyServer.enabled }}
 apiVersion: {{ $.Values.crdVersion }}
 kind: PolicyServer
 metadata:
@@ -7,9 +7,9 @@ metadata:
     app.kubernetes.io/component: policy-server
   annotations:
     {{- include "kubewarden-defaults.annotations" . | nindent 4 }}
-  name: {{ .Values.global.policyServer.default.name }}
+  name: default
   finalizers:
-    - kubewarden
+    - kubewarden.io/finalizer
 spec:
   image: {{ template "system_default_registry" . }}{{ .Values.policyServer.image.repository }}:{{ .Values.policyServer.image.tag }}
   serviceAccountName: {{ .Values.policyServer.serviceAccountName }}
@@ -20,8 +20,11 @@ spec:
   {{- if .Values.policyServer.maxUnavailable }}
   maxUnavailable: {{ .Values.policyServer.maxUnavailable  }}
   {{- end }}
-  {{- if .Values.policyServer.affinity }}
-  affinity: {{ .Values.policyServer.affinity | toYaml | nindent 4 }}
+  {{- if .Values.global.affinity }}
+  affinity: {{ .Values.global.affinity | toYaml | nindent 4 }}
+  {{- end }}
+  {{- if .Values.global.tolerations }}
+  tolerations: {{ .Values.global.tolerations | toYaml | nindent 4 }}
   {{- end }}
   {{- if .Values.policyServer.limits }}
   limits: {{ .Values.policyServer.limits | toYaml | nindent 4 }}

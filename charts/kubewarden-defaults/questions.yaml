@@ -38,8 +38,8 @@ questions:
     required: true
     label: Name of the ServiceAccount associated to the PolicyServer default
     description: |
-      Minimum number of policy-server Pods that must be available at all times.
-      Can be an integer or a percentage.
+      The ServiceAccount that is being used by the default PolicyServer to interact
+      with the Kubernetes API Server.
     group: "Default PolicyServer"
   # Default PolicyServer HA
   - variable: "policyServer.replicaCount"
@@ -120,27 +120,30 @@ questions:
     label: Allow host PID
     required: false
     type: boolean
-  - variable: recommendedPolicies.hostNamespacePolicy.settings.allow_host_ports
-    description: >-
-      A range of ports to allow, an example would allow host ports `80`, `443` and
-      the range `8000-9000`.
-    group: no-host-namespace-sharing policy settings
-    label: Allow host ports
-    hide_input: true
-    type: sequence[
-    sequence_questions:
-      - default: 0
-        tooltip: ""
-        group: no-host-namespace-sharing policy settings
-        label: min
-        type: int
-        variable: min
-      - default: 0
-        tooltip: ""
-        group: no-host-namespace-sharing policy settings
-        label: max
-        type: int
-        variable: max
+  #
+  # TODO sequence[ is not implemented in rancher/dashboard yet: https://github.com/rancher/dashboard/issues/10826
+  #
+  # - variable: recommendedPolicies.hostNamespacePolicy.settings.allow_host_ports
+  #   description: >-
+  #     A range of ports to allow, an example would allow host ports `80`, `443` and
+  #     the range `8000-9000`.
+  #   group: no-host-namespace-sharing policy settings
+  #   label: Allow host ports
+  #   hide_input: true
+  #   type: sequence[
+  #   sequence_questions:
+  #     - default: 0
+  #       tooltip: ""
+  #       group: no-host-namespace-sharing policy settings
+  #       label: min
+  #       type: int
+  #       variable: min
+  #     - default: 0
+  #       tooltip: ""
+  #       group: no-host-namespace-sharing policy settings
+  #       label: max
+  #       type: int
+  #       variable: max
   # no-privileged-pod policy settings
   - variable: recommendedPolicies.podPrivilegedPolicy.settings.skip_init_containers
     tooltip: >-
@@ -321,6 +324,20 @@ questions:
   #           tooltip: Maxium UID or GID
   #           type: int
   #           variable: max
+  # - variable: recommendedPolicies.userGroupPolicy.settings.validate_container_image_configuration
+  #   default: false
+  #   tooltip: Validate the USER directive in the container image
+  #   label: Validate container image configuration
+  #   description: >-
+  #     Validate the USER directive in the container image. If set to true, the
+  #     policy will enforce the same rules as MustRunAs and MustRunAsNonRoot for
+  #     the run_as_user. And checks if the group of the USER directive is in the
+  #     run_as_group range. The user and group should be defined as uid and gid.
+  #     Container image validation is skipped if the container image is a Windows
+  #     container. And user and groups names are not allowed.
+  #   required: false
+  #   type: boolean
+  #
   # do-not-share-host-paths policy settings
   #
   # TODO sequence[ is not implemented in rancher/dashboard yet: https://github.com/rancher/dashboard/issues/10826

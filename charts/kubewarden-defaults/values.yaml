@@ -3,6 +3,61 @@
 # by more than one chart and they ideally need to match during the
 # installation of the charts consuming this values.
 global:
+  # affinity:
+  #   podAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #     - labelSelector:
+  #         matchExpressions:
+  #         - key: security
+  #           operator: In
+  #           values:
+  #           - S1
+  #       topologyKey: topology.kubernetes.io/zone
+  #   podAntiAffinity:
+  #     preferredDuringSchedulingIgnoredDuringExecution:
+  #     - weight: 100
+  #       podAffinityTerm:
+  #         labelSelector:
+  #           matchExpressions:
+  #           - key: security
+  #             operator: In
+  #             values:
+  #             - S2
+  #         topologyKey: topology.kubernetes.io/zone
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #       - matchExpressions:
+  #         - key: kubernetes.io/os
+  #           operator: In
+  #           values:
+  #           - linux
+  #     preferredDuringSchedulingIgnoredDuringExecution:
+  #     - weight: 1
+  #       preference:
+  #         matchExpressions:
+  #         - key: label-1
+  #           operator: In
+  #           values:
+  #           - key-1
+  #     - weight: 50
+  #       preference:
+  #         matchExpressions:
+  #         - key: label-2
+  #           operator: In
+  #           values:
+  #           - key-2
+  affinity: {}
+  # tolerations:
+  #   - key: "key1"
+  #     operator: "Equal"
+  #     value: "value1"
+  #     effect: "NoSchedule"
+  #   - key: "key1"
+  #     operator: "Equal"
+  #     value: "value1"
+  #     effect: "NoExecute"
+  tolerations: []
   cattle:
     systemDefaultRegistry: ghcr.io
   skipNamespaces:
@@ -44,10 +99,6 @@ global:
     - rancher-alerting-drivers
     - security-scan
     - tigera-operator
-  policyServer:
-    default:
-      name: default
-      enabled: true
 # -- Additional labels to add to all resources
 additionalLabels: {}
 # app: kubewarden-defaults
@@ -56,13 +107,14 @@ additionalAnnotations: {}
 # owner: IT-group1
 # Policy Server settings
 policyServer:
+  enabled: true
   replicaCount: 1
   minAvailable: ""
   maxUnavailable: ""
   image:
     # The registry is defined in the global.cattle.systemDefaultRegistry value
     repository: "kubewarden/policy-server"
-    tag: v1.12.0-rc2
+    tag: v1.15.0
   serviceAccountName: policy-server
   # verificationConfig: your_configmap
   # Configmap containing a Sigstore verification configuration under a key
@@ -113,8 +165,6 @@ policyServer:
   #     certs:
   #       - "cert4"
   sourceAuthorities: {}
-  # affinity for pods of the default PolicyServer
-  affinity: {}
   # limits and requests, see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
   limits: {}
   requests: {}
@@ -157,7 +207,7 @@ recommendedPolicies:
   userGroupPolicy:
     module:
       repository: "kubewarden/policies/user-group-psp"
-      tag: v0.5.0
+      tag: v0.6.0
     name: "do-not-run-as-root"
     settings:
       run_as_user:
@@ -166,6 +216,7 @@ recommendedPolicies:
         rule: "RunAsAny"
       supplemental_groups:
         rule: "RunAsAny"
+      validate_container_image_configuration: false
   hostPathsPolicy:
     module:
       repository: "kubewarden/policies/hostpaths-psp"
