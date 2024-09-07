@@ -25,7 +25,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/checkout@v4
       with:
-        repository: 'kubewarden/kubewarden-end-to-end-tests'
+        repository: ${{ github.repository_owner }}/kubewarden-end-to-end-tests
         path: e2e-tests
 
     - name: "Create kubernetes cluster"
