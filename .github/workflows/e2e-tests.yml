@@ -41,7 +41,8 @@ on:
     branches:
       - "main"
   schedule:
-    - cron: '0 21 * * *'
+    # TODO revert to '0 21 * * *'
+    - cron: '21 * * * *'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -61,7 +62,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Schedule triggers: tagged:[install|upgrade] & local(latest):install, PR triggers: local:install
+        # schedule: tagged+[install|upgrade] & local+install(latest)
+        # pull_request: local:install
         mode: ${{ (github.event_name == 'schedule') && fromJSON('["install", "upgrade"]') || fromJSON(format('["{0}"]', inputs.mode || 'install')) }}
         version: ${{ (github.event_name == 'schedule') && fromJSON('["next", "local"]') || fromJSON(format('["{0}"]', inputs.version || 'local')) }}
         exclude:
@@ -69,6 +71,7 @@ jobs:
             mode: upgrade
 
     # Run schedule workflows only on original repo, not forks
+    # TODO remove kravciak
     if: github.event_name != 'schedule' || github.repository_owner == 'kubewarden' || github.repository_owner == 'kravciak'
 
     runs-on: ubuntu-latest
