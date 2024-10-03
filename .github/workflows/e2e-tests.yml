@@ -45,7 +45,7 @@ on:
   # - install from main with latest images (to check if we can tag and release)
   # - install tagged charts (refrence job to make sure product works, most stable case)
   schedule:
-    - cron: '17 * * * *' # '0 21 * * *'
+    - cron: '31 * * * *' # '0 21 * * *'
 
   # Release (stable, rc, beta):
   # - install release
