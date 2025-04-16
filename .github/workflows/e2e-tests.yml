@@ -120,7 +120,7 @@ jobs:
       with:
         KWCTL_VERSION: latest
 
-    - run: sudo npm install -g bats
+    - run: sudo npm install @bats-core/bats@1.11.1
 
     - name: "Create k3d cluster"
       run: |
