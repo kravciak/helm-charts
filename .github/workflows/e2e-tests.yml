@@ -158,6 +158,7 @@ jobs:
             export CHARTS_LOCATION=../charts
             # Chart images are updated during release, use latest for nightly jobs
             [[ "${{ github.event_name }}" == 'schedule' ]] && export LATEST=true
+            [[ "${{ github.event_name }}" == 'pull_request' ]] && export LATEST=true
           fi
 
           # mTLS should have been enabled during installation

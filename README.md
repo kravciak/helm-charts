@@ -7,3 +7,8 @@
 [![Backup-Restore E2E Test](https://github.com/kubewarden/helm-charts/actions/workflows/e2e-backup-restore.yml/badge.svg?event=schedule)](https://github.com/kubewarden/helm-charts/actions/workflows/e2e-backup-restore.yml?query=event%3Aschedule)
 
 This repository contains the helm charts used to deploy the Kubewarden stack.
+fsd
+fds
+fds
+fds
+fsd
