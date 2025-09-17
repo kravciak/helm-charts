@@ -165,7 +165,7 @@ jobs:
           ./scripts/helmer.sh debug
 
           # Run tests
-          make tests audit-scanner-installation.bats
+          make opentelemetry-tests.bats
           make uninstall
         env:
           CLUSTER_NAME: ${{ env.K3D_CLUSTER_NAME }}
