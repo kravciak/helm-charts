@@ -165,6 +165,7 @@ jobs:
           ./scripts/helmer.sh debug
 
           # Run tests
+          echo ghOTEL_OPERATOR: $OTEL_OPERATOR
           make opentelemetry-tests.bats
           make uninstall
         env:
