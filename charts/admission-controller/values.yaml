@@ -481,6 +481,7 @@ policyServer:
         - namespaces
         - pods
         - services
+        - configmaps
     - apiGroup: "networking.k8s.io"
       resources:
         - ingresses
